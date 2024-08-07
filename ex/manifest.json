@@ -1,0 +1,18 @@
+{
+  "name": "chrome-ex-chatgpt-quiz",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "description": "chrome-ex-chatgpt-quiz",
+  "permissions": ["webRequest", "declarativeNetRequest"],
+  "host_permissions": ["https://zenn.dev/*", "https://qiita.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://zenn.dev/*", "https://qiita.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    { "resources": ["injected.js"], "matches": ["https://zenn.dev/*", "https://qiita.com/*"] }
+  ]
+}
