@@ -1,16 +1,20 @@
 import { useState } from "react";
-import { Quiz } from "./type";
+import { Platform, Quiz } from "./type";
 
-export const QuizBox = ({ quiz }: { quiz: Quiz }) => {
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+export const QuizBox = ({
+  quiz,
+  platform,
+}: {
+  quiz: Quiz;
+  platform: Platform;
+}) => {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
   return (
     <div
       style={{
-        backgroundColor: "white",
         padding: "20px 0",
         fontFamily: "Arial, sans-serif",
-        color: "#333",
       }}
     >
       <>
@@ -20,25 +24,30 @@ export const QuizBox = ({ quiz }: { quiz: Quiz }) => {
           {quiz.question}
         </div>
         <div>
-          {quiz.choices.map((choice, index) => (
+          {quiz.quizChoices.map((choice, index) => (
             <label
-              key={index}
+              key={choice.id}
               style={{
                 display: "block",
-                backgroundColor: "#edf2f7",
-                border: "none",
                 borderRadius: "5px",
                 margin: "5px 0",
                 padding: "10px",
                 cursor: "pointer",
                 transition: "background-color 0.3s",
+                ...(platform === "Zenn" && {
+                  backgroundColor: "#edf2f7",
+                  border: "none",
+                }),
+                ...(platform === "Qiita" && {
+                  border: "1px solid",
+                }),
                 ...(isAnswered &&
-                  (index === quiz.choices.indexOf(quiz.answer)
+                  (choice.isCorrect
                     ? {
                         backgroundColor: "#4caf50",
                         color: "white",
                       }
-                    : selectedOption === index
+                    : selectedOption === choice.id
                     ? {
                         backgroundColor: "#f44336",
                         color: "white",
@@ -51,36 +60,35 @@ export const QuizBox = ({ quiz }: { quiz: Quiz }) => {
                 name="option"
                 value={index}
                 disabled={isAnswered}
-                onChange={() => setSelectedOption(index)}
+                onChange={() => setSelectedOption(choice.id)}
                 style={{ marginRight: "10px" }}
               />
-              {choice}
+              {choice.text}
             </label>
           ))}
         </div>
-        {isAnswered ? (
-          <div style={{ marginTop: "20px", fontSize: "small" }}>
-            {quiz.explanation}
-          </div>
-        ) : (
-          <div style={{ display: "flex", justifyContent: "end" }}>
-            <button
-              onClick={() => setIsAnswered(true)}
-              style={{
-                backgroundColor: "#3ea8ff",
-                color: "white",
-                border: "none",
-                padding: "10px 20px",
-                cursor: "pointer",
-                borderRadius: "99rem",
-                marginTop: "20px",
-                fontWeight: "bold",
-              }}
-            >
-              解答
-            </button>
-          </div>
-        )}
+        <div style={{ height: "80px", paddingTop: "20px" }}>
+          {isAnswered ? (
+            <div style={{ fontSize: "small" }}>{quiz.explanation}</div>
+          ) : (
+            <div style={{ display: "flex", justifyContent: "end" }}>
+              <button
+                onClick={() => setIsAnswered(true)}
+                style={{
+                  backgroundColor: "#3ea8ff",
+                  color: "white",
+                  border: "none",
+                  padding: "10px 20px",
+                  cursor: "pointer",
+                  borderRadius: "99rem",
+                  fontWeight: "bold",
+                }}
+              >
+                回答
+              </button>
+            </div>
+          )}
+        </div>
       </>
     </div>
   );

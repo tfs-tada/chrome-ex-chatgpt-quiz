@@ -3,21 +3,43 @@ import ReactDOM from "react-dom/client";
 import { App } from "./App.tsx";
 
 const render = () => {
-  const targetDom = document.querySelector(
-    "article section aside[class^='View_authorInfo']"
+  const isZenn = window.location.href.match(
+    /zenn\.dev\/[^/]+\/articles\/[^/]+/
   );
-  const targetParent = targetDom?.parentElement;
-  if (!targetParent) {
+  const isQiita = window.location.href.match(/qiita\.com\/[^/]+\/items\/[^/]+/);
+  const isLocalhost = window.location.href.match(/localhost/);
+  if (!isZenn && !isQiita && !isLocalhost) {
     return;
   }
-  const insertAsideDom = document.createElement("aside");
+  if (isZenn || isLocalhost) {
+    const targetDom = document.querySelector(
+      "article section aside[class^='View_authorInfo']"
+    );
+    const targetParent = targetDom?.parentElement;
+    if (!targetParent) {
+      return;
+    }
+    const insertAsideDom = document.createElement("aside");
 
-  insertAsideDom.innerHTML = `<div id="quizBox"></div>`;
-  targetParent.insertBefore(insertAsideDom, targetDom);
+    insertAsideDom.innerHTML = `<div id="quizBox"></div>`;
+    targetParent.insertBefore(insertAsideDom, targetDom);
+  } else if (isQiita) {
+    const targetDom = document.querySelector(
+      "article div button[aria-label^='facebookでシェア']"
+    )?.parentElement?.parentElement;
+    const targetParent = targetDom?.parentElement;
+    if (!targetParent || !targetDom) {
+      return;
+    }
+    const insertAsideDom = document.createElement("aside");
+
+    insertAsideDom.innerHTML = `<div id="quizBox"></div>`;
+    targetParent.insertBefore(insertAsideDom, targetDom.nextElementSibling);
+  }
 
   ReactDOM.createRoot(document.getElementById("quizBox")!).render(
     <React.StrictMode>
-      <App />
+      <App platform={isZenn ? "Zenn" : isQiita ? "Qiita" : "dev"} />
     </React.StrictMode>
   );
 };
