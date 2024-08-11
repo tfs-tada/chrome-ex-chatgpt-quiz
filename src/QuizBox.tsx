@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Platform, Quiz } from "./type";
+import { BadIcon, GoodIcon } from "./svg";
 
 export const QuizBox = ({
   quiz,
@@ -10,6 +11,46 @@ export const QuizBox = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
+  const [feedbacked, setFeedbacked] = useState<
+    "positive" | "negative" | undefined
+  >(undefined);
+  const storageFeedback = useSyncExternalStore(
+    () => () => {},
+    () => localStorage.getItem(`${quiz.id}_feedback`),
+    () => "waiting"
+  );
+
+  const handleAnswer = () => {
+    setIsAnswered(true);
+    fetch("http://localhost:3000/api/answer", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quizId: quiz.id,
+        choiceId: selectedOption,
+      }),
+    });
+  };
+  const handleFeedback = (isPositive: boolean) => {
+    setFeedbacked(isPositive ? "positive" : "negative");
+    localStorage.setItem(
+      `${quiz.id}_feedback`,
+      isPositive ? "positive" : "negative"
+    );
+    fetch("http://localhost:3000/api/feedback", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quizId: quiz.id,
+        isPositive,
+      }),
+    });
+  };
+
   return (
     <div
       style={{
@@ -69,11 +110,58 @@ export const QuizBox = ({
         </div>
         <div style={{ height: "80px", paddingTop: "20px" }}>
           {isAnswered ? (
-            <div style={{ fontSize: "small" }}>{quiz.explanation}</div>
+            <div>
+              <div style={{ fontSize: "small" }}>{quiz.explanation}</div>
+              <div
+                style={{ display: "flex", justifyContent: "end", gap: "8px" }}
+              >
+                <button
+                  disabled={
+                    typeof feedbacked === "string" || storageFeedback !== null
+                  }
+                  onClick={() => handleFeedback(true)}
+                  style={{
+                    ...(storageFeedback === "positive" ||
+                    feedbacked === "positive"
+                      ? {
+                          backgroundColor: "#4caf50",
+                          color: "white",
+                        }
+                      : {}),
+                  }}
+                  aria-label="good feedback"
+                >
+                  <GoodIcon
+                    fillColor={
+                      storageFeedback === "positive" ||
+                      feedbacked === "positive"
+                        ? "#4caf50"
+                        : "#000"
+                    }
+                  />
+                </button>
+                <button
+                  disabled={
+                    typeof feedbacked === "string" || storageFeedback !== null
+                  }
+                  onClick={() => handleFeedback(false)}
+                  aria-label="bad feedback"
+                >
+                  <BadIcon
+                    fillColor={
+                      storageFeedback === "negative" ||
+                      feedbacked === "negative"
+                        ? "#f44336"
+                        : "#000"
+                    }
+                  />
+                </button>
+              </div>
+            </div>
           ) : (
             <div style={{ display: "flex", justifyContent: "end" }}>
               <button
-                onClick={() => setIsAnswered(true)}
+                onClick={handleAnswer}
                 style={{
                   backgroundColor: "#3ea8ff",
                   color: "white",
