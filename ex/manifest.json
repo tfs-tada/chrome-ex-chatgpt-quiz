@@ -9,10 +9,14 @@
     {
       "matches": ["https://zenn.dev/*", "https://qiita.com/*"],
       "js": ["content.js"],
+      "css": ["injected.css"],
       "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": [
-    { "resources": ["injected.js"], "matches": ["https://zenn.dev/*", "https://qiita.com/*"] }
+    {
+      "resources": ["injected.js", "injected.css"],
+      "matches": ["https://zenn.dev/*", "https://qiita.com/*"]
+    }
   ]
 }
