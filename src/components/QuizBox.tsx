@@ -1,6 +1,9 @@
 import { useState, useSyncExternalStore } from "react";
-import { Platform, Quiz } from "./type";
+import { Platform, Quiz } from "../type";
 import { BadIcon, GoodIcon } from "./svg";
+import { getStorageFeedback, setStorageFeedback } from "../storage/feedback";
+import { createFeedback } from "../repository/createFeedback";
+import { createAnswerLog } from "../repository/createAnswerLog";
 
 export const QuizBox = ({
   quiz,
@@ -16,43 +19,26 @@ export const QuizBox = ({
   >(undefined);
   const storageFeedback = useSyncExternalStore(
     () => () => {},
-    () => localStorage.getItem(`${quiz.id}_feedback`),
+    () => getStorageFeedback(quiz.id),
     () => "waiting"
   );
 
   const handleAnswer = () => {
     setIsAnswered(true);
-    fetch("http://localhost:3000/api/answer", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        quizId: quiz.id,
-        choiceId: selectedOption,
-      }),
-    });
+    createAnswerLog({ quizId: quiz.id, choiceId: selectedOption });
   };
   const handleFeedback = (isPositive: boolean) => {
-    setFeedbacked(isPositive ? "positive" : "negative");
-    localStorage.setItem(
-      `${quiz.id}_feedback`,
-      isPositive ? "positive" : "negative"
-    );
-    fetch("http://localhost:3000/api/feedback", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        quizId: quiz.id,
-        isPositive,
-      }),
-    });
+    const feedback = isPositive ? "positive" : "negative";
+    setFeedbacked(feedback);
+    setStorageFeedback(quiz.id, feedback);
+    createFeedback({ quizId: quiz.id, isPositive });
   };
 
+  const disabledFeedback =
+    typeof feedbacked === "string" || typeof storageFeedback === "string";
+
   return (
-    <div className="py-5 font-sans">
+    <div className="py-2 font-sans">
       <div className="mb-5 font-bold">{quiz.question}</div>
       <div>
         {quiz.quizChoices.map((choice, index) => (
@@ -85,21 +71,17 @@ export const QuizBox = ({
               onChange={() => setSelectedOption(choice.id)}
               className="mr-2"
             />
-            <span style={{ lineHeight: "normal" }} className="text-[0.8em]">
-              {choice.text}
-            </span>
+            <span className="text-[0.8em]">{choice.text}</span>
           </label>
         ))}
       </div>
-      <div className="py-4 min-h-40">
+      <div className="py-2 h-32">
         {isAnswered ? (
-          <div className="flex flex-col justify-around h-full">
+          <div className="flex flex-col justify-between h-full">
             <div className="text-[12px]">{quiz.explanation}</div>
             <div className="flex justify-end gap-2">
               <button
-                disabled={
-                  typeof feedbacked === "string" || storageFeedback !== null
-                }
+                disabled={disabledFeedback}
                 onClick={() => handleFeedback(true)}
                 aria-label="good feedback"
                 className="bg-transparent border-none"
@@ -113,9 +95,7 @@ export const QuizBox = ({
                 />
               </button>
               <button
-                disabled={
-                  typeof feedbacked === "string" || storageFeedback !== null
-                }
+                disabled={disabledFeedback}
                 onClick={() => handleFeedback(false)}
                 aria-label="bad feedback"
                 className="bg-transparent border-none"

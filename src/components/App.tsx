@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { Article, Platform, Quiz } from "./type";
+import { Article, Platform, Quiz } from "../type";
 import { QuizBox } from "./QuizBox";
+import { createQuizes } from "../repository/createQuizes";
+import { fetchArticle } from "../repository/fetchArticle";
 
 const hostRegex = {
   dev: /https:\/\/zenn\.dev\/(?<author>[^/]+)\/articles\/(?<id>[^/]+)/,
@@ -13,7 +15,7 @@ export const App = ({ platform }: { platform: Platform }) => {
   const [, setArticle] = useState<Article | null>(null);
   const [quizList, setQuizList] = useState<Quiz[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const createQuiz = async () => {
+  const handleCreateQuiz = async () => {
     setLoading(true);
     const currentUrl = platform === "dev" ? dummyHref : window.location.href;
     const match = currentUrl.match(hostRegex[platform]);
@@ -21,18 +23,7 @@ export const App = ({ platform }: { platform: Platform }) => {
       return null;
     }
     const { author, id } = match.groups!;
-    const response = await fetch(`http://localhost:3000/api/quiz`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        author,
-        articleId: id,
-        platform: platform === "dev" ? "Zenn" : platform,
-      }),
-    });
-    const data = await response.json();
+    const data = await createQuizes({ author, articleId: id, platform });
     setQuizList(data);
     setLoading(false);
   };
@@ -45,19 +36,11 @@ export const App = ({ platform }: { platform: Platform }) => {
         return null;
       }
       const { author, id } = match.groups!;
-      const response = await fetch(
-        `http://localhost:3000/api/article?author=${author}&articleId=${id}&platform=${
-          platform === "dev" ? "Zenn" : platform
-        }`
-      );
-      const data = await response.json();
+      const data = await fetchArticle({ author, articleId: id, platform });
       setArticle(data);
       setLoading(false);
     })();
   }, []);
-
-  // const shwoLoading =
-  //   loading || quizList.length === 0 || article?.quizStatus === "NONE";
 
   return (
     <div className="mb-4">
@@ -79,13 +62,13 @@ export const App = ({ platform }: { platform: Platform }) => {
       )}
       <div>
         <small>
-          確認問題はブラウザ拡張によって挿入された非公式モジュールです
+          *確認問題はブラウザ拡張によって挿入された非公式モジュールです*
         </small>
       </div>
       {quizList.length === 0 && (
         <div className="text-center my-4">
           <button
-            onClick={createQuiz}
+            onClick={handleCreateQuiz}
             disabled={loading}
             className={`w-1/2 py-2 border rounded-full text-white
             ${
