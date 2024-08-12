@@ -52,132 +52,98 @@ export const QuizBox = ({
   };
 
   return (
-    <div
-      style={{
-        padding: "20px 0",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      <>
-        <div
-          style={{ marginBottom: "20px", borderBottom: "1px solid #d6e3ed" }}
-        >
-          {quiz.question}
-        </div>
-        <div>
-          {quiz.quizChoices.map((choice, index) => (
-            <label
-              key={choice.id}
-              style={{
-                display: "block",
-                borderRadius: "5px",
-                margin: "5px 0",
-                padding: "10px",
-                cursor: "pointer",
-                transition: "background-color 0.3s",
-                ...(platform === "Zenn" && {
-                  backgroundColor: "#edf2f7",
-                  border: "none",
-                }),
-                ...(platform === "Qiita" && {
-                  border: "1px solid",
-                }),
-                ...(isAnswered &&
-                  (choice.isCorrect
-                    ? {
-                        backgroundColor: "#4caf50",
-                        color: "white",
-                      }
-                    : selectedOption === choice.id
-                    ? {
-                        backgroundColor: "#f44336",
-                        color: "white",
-                      }
-                    : {})),
-              }}
-            >
-              <input
-                type="radio"
-                name="option"
-                value={index}
-                disabled={isAnswered}
-                onChange={() => setSelectedOption(choice.id)}
-                style={{ marginRight: "10px" }}
-              />
+    <div className="py-5 font-sans">
+      <div className="mb-5 font-bold">{quiz.question}</div>
+      <div>
+        {quiz.quizChoices.map((choice, index) => (
+          <label
+            key={index}
+            className={`flex rounded-md mb-2 p-3 cursor-pointer transition-colors duration-300 
+                            ${platform === "Zenn" ? "bg-gray-100" : ""} 
+                            ${
+                              platform === "Qiita"
+                                ? `bg-gray-400 ${
+                                    isAnswered ? "" : "bg-opacity-20"
+                                  }`
+                                : ""
+                            } 
+                            ${
+                              isAnswered
+                                ? choice.isCorrect
+                                  ? "bg-green-500 text-white"
+                                  : selectedOption === choice.id
+                                  ? "bg-red-500 text-white"
+                                  : ""
+                                : ""
+                            }`}
+          >
+            <input
+              type="radio"
+              name="option"
+              value={index}
+              disabled={isAnswered}
+              onChange={() => setSelectedOption(choice.id)}
+              className="mr-2"
+            />
+            <span style={{ lineHeight: "normal" }} className="text-[0.8em]">
               {choice.text}
-            </label>
-          ))}
-        </div>
-        <div style={{ height: "80px", paddingTop: "20px" }}>
-          {isAnswered ? (
-            <div>
-              <div style={{ fontSize: "small" }}>{quiz.explanation}</div>
-              <div
-                style={{ display: "flex", justifyContent: "end", gap: "8px" }}
-              >
-                <button
-                  disabled={
-                    typeof feedbacked === "string" || storageFeedback !== null
-                  }
-                  onClick={() => handleFeedback(true)}
-                  style={{
-                    ...(storageFeedback === "positive" ||
-                    feedbacked === "positive"
-                      ? {
-                          backgroundColor: "#4caf50",
-                          color: "white",
-                        }
-                      : {}),
-                  }}
-                  aria-label="good feedback"
-                >
-                  <GoodIcon
-                    fillColor={
-                      storageFeedback === "positive" ||
-                      feedbacked === "positive"
-                        ? "#4caf50"
-                        : "#000"
-                    }
-                  />
-                </button>
-                <button
-                  disabled={
-                    typeof feedbacked === "string" || storageFeedback !== null
-                  }
-                  onClick={() => handleFeedback(false)}
-                  aria-label="bad feedback"
-                >
-                  <BadIcon
-                    fillColor={
-                      storageFeedback === "negative" ||
-                      feedbacked === "negative"
-                        ? "#f44336"
-                        : "#000"
-                    }
-                  />
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div style={{ display: "flex", justifyContent: "end" }}>
+            </span>
+          </label>
+        ))}
+      </div>
+      <div className="py-4 min-h-40">
+        {isAnswered ? (
+          <div className="flex flex-col justify-around h-full">
+            <div className="text-[12px]">{quiz.explanation}</div>
+            <div className="flex justify-end gap-2">
               <button
-                onClick={handleAnswer}
-                style={{
-                  backgroundColor: "#3ea8ff",
-                  color: "white",
-                  border: "none",
-                  padding: "10px 20px",
-                  cursor: "pointer",
-                  borderRadius: "99rem",
-                  fontWeight: "bold",
-                }}
+                disabled={
+                  typeof feedbacked === "string" || storageFeedback !== null
+                }
+                onClick={() => handleFeedback(true)}
+                aria-label="good feedback"
+                className="bg-transparent border-none"
               >
-                回答
+                <GoodIcon
+                  fillColor={
+                    storageFeedback === "positive" || feedbacked === "positive"
+                      ? "#4caf50"
+                      : "gray"
+                  }
+                />
+              </button>
+              <button
+                disabled={
+                  typeof feedbacked === "string" || storageFeedback !== null
+                }
+                onClick={() => handleFeedback(false)}
+                aria-label="bad feedback"
+                className="bg-transparent border-none"
+              >
+                <BadIcon
+                  fillColor={
+                    storageFeedback === "negative" || feedbacked === "negative"
+                      ? "#f44336"
+                      : "gray"
+                  }
+                />
               </button>
             </div>
-          )}
-        </div>
-      </>
+          </div>
+        ) : (
+          <div className="flex justify-end">
+            <button
+              onClick={handleAnswer}
+              className={`text-white border-none px-4 py-2 rounded-full font-bold cursor-pointer text-[14px] 
+                  ${platform === "Zenn" ? "bg-zenn-primary " : ""}
+                  ${platform === "Qiita" ? "bg-qiita-primary" : ""}
+                `}
+            >
+              回答
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

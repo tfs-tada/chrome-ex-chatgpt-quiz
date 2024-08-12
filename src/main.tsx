@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App.tsx";
+import "./styles/globals.css";
 
 const render = () => {
   const isZenn = window.location.href.match(
@@ -25,8 +26,8 @@ const render = () => {
     targetParent.insertBefore(insertAsideDom, targetDom);
   } else if (isQiita) {
     const targetDom = document.querySelector(
-      "article div button[aria-label^='facebookでシェア']"
-    )?.parentElement?.parentElement;
+      "article div button[aria-label^='いいねする']"
+    )?.parentElement?.parentElement?.parentElement?.parentElement;
     const targetParent = targetDom?.parentElement;
     if (!targetParent || !targetDom) {
       return;
