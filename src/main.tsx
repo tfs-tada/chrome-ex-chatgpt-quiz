@@ -68,9 +68,9 @@ const render = () => {
   window.addEventListener("locationchange", () => {
     setTimeout(() => {
       render();
-    }, 1000);
+    }, 200);
   });
   setTimeout(() => {
     render();
-  }, 1000);
+  }, 200);
 })();
