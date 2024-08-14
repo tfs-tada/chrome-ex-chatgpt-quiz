@@ -49,7 +49,11 @@ export const QuizBox = ({
                             ${
                               platform === "Qiita"
                                 ? `bg-gray-400 ${
-                                    isAnswered ? "" : "bg-opacity-20"
+                                    isAnswered &&
+                                    (choice.isCorrect ||
+                                      selectedOption === choice.id)
+                                      ? ""
+                                      : "bg-opacity-20"
                                   }`
                                 : ""
                             } 
