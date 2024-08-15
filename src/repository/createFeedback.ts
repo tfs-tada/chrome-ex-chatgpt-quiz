@@ -1,3 +1,5 @@
+import { API_URL } from "./constant";
+
 export const createFeedback = async ({
   quizId,
   isPositive,
@@ -5,7 +7,7 @@ export const createFeedback = async ({
   quizId: string;
   isPositive: boolean;
 }) => {
-  const response = await fetch(`http://localhost:3000/api/feedback`, {
+  const response = await fetch(`${API_URL}/feedback`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

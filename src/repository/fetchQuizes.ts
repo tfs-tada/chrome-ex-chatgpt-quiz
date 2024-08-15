@@ -1,3 +1,4 @@
+import { API_URL } from "./constant";
 import { Platform } from "../type";
 
 export const fetchQuizes = async ({
@@ -10,7 +11,7 @@ export const fetchQuizes = async ({
   platform: Platform;
 }) => {
   const response = await fetch(
-    `http://localhost:3000/api/quiz?author=${author}&articleId=${articleId}&platform=${
+    `${API_URL}/quiz?author=${author}&articleId=${articleId}&platform=${
       platform === "dev" ? "Zenn" : platform
     }`
   );

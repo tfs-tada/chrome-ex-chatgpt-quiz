@@ -76,7 +76,7 @@ export const App = ({ platform }: { platform: Platform }) => {
           <i>i</i>
         </div>
         <small>
-          確認問題はブラウザ拡張によって挿入された非公式モジュールです（詳細は<a href="#" target="_blank" className="underline">こちら</a>）
+          確認問題はブラウザ拡張によって挿入された非公式モジュールです（詳細は<a href="https://quizenn.vercel.app" target="_blank" className="underline">こちら</a>）
         </small>
       </div>
       {quizList.length === 0 && (
