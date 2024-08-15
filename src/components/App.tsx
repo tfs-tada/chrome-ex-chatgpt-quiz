@@ -14,9 +14,11 @@ const dummyHref = "https://zenn.dev/kurashiki0ecma/articles/83097b7945201b";
 export const App = ({ platform }: { platform: Platform }) => {
   const [, setArticle] = useState<Article | null>(null);
   const [quizList, setQuizList] = useState<Quiz[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<"loading" | "quizCreating" | false>(
+    "loading"
+  );
   const handleCreateQuiz = async () => {
-    setLoading(true);
+    setLoading("loading");
     const currentUrl = platform === "dev" ? dummyHref : window.location.href;
     const match = currentUrl.match(hostRegex[platform]);
     if (!match) {
@@ -24,6 +26,10 @@ export const App = ({ platform }: { platform: Platform }) => {
     }
     const { author, id } = match.groups!;
     const data = await createQuizes({ author, articleId: id, platform });
+    if (data.length === 0) {
+      setLoading("quizCreating");
+      return;
+    }
     setQuizList(data);
     setLoading(false);
   };
@@ -36,8 +42,13 @@ export const App = ({ platform }: { platform: Platform }) => {
         return null;
       }
       const { author, id } = match.groups!;
-      const data = await fetchArticle({ author, articleId: id, platform });
+      const { quizes, ...data } = await fetchArticle({
+        author,
+        articleId: id,
+        platform,
+      });
       setArticle(data);
+      setQuizList(quizes);
       setLoading(false);
     })();
   }, []);
@@ -60,17 +71,20 @@ export const App = ({ platform }: { platform: Platform }) => {
           確認問題
         </h2>
       )}
-      <div>
+      <div className="flex items-center bg-[#fff6e4] my-8 py-4 px-4 rounded-lg">
+        <div className="flex items-center justify-center bg-[#d4af37] text-black w-[1.25em] h-[1.25em] rounded-full m-4">
+          <i>i</i>
+        </div>
         <small>
-          *確認問題はブラウザ拡張によって挿入された非公式モジュールです*
+          確認問題はブラウザ拡張によって挿入された非公式モジュールです（詳細は<a href="#" target="_blank" className="underline">こちら</a>）
         </small>
       </div>
       {quizList.length === 0 && (
         <div className="text-center my-4">
           <button
             onClick={handleCreateQuiz}
-            disabled={loading}
-            className={`w-1/2 py-2 border rounded-full text-white
+            disabled={!!loading}
+            className={`w-1/2 min-w-96 py-2 border rounded-full text-white
             ${
               loading
                 ? "bg-gray-300"
@@ -82,7 +96,11 @@ export const App = ({ platform }: { platform: Platform }) => {
             }
             `}
           >
-            {loading ? "ローディング中です" : "問題を作成"}
+            {loading === "loading"
+              ? "ローディング中です"
+              : loading === "quizCreating"
+              ? "時間をおいてリロードしてください"
+              : "確認問題を作成する"}
           </button>
         </div>
       )}
