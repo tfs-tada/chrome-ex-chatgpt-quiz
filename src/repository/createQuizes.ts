@@ -1,3 +1,4 @@
+import { API_URL } from "./constant";
 import { Platform } from "../type";
 
 export const createQuizes = async ({
@@ -9,7 +10,7 @@ export const createQuizes = async ({
   articleId: string;
   platform: Platform;
 }) => {
-  const response = await fetch(`http://localhost:3000/api/quiz`, {
+  const response = await fetch(`${API_URL}/quiz`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

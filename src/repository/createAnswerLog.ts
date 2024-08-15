@@ -1,3 +1,5 @@
+import { API_URL } from "./constant";
+
 export const createAnswerLog = async ({
   quizId,
   choiceId,
@@ -5,7 +7,7 @@ export const createAnswerLog = async ({
   quizId: string;
   choiceId: string | null;
 }) => {
-  const response = await fetch(`http://localhost:3000/api/answer`, {
+  const response = await fetch(`${API_URL}/answer`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
