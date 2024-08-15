@@ -38,7 +38,7 @@ export const QuizBox = ({
     typeof feedbacked === "string" || typeof storageFeedback === "string";
 
   return (
-    <div className="py-2 font-sans">
+    <div className="py-2 font-sans text-[15px]">
       <div className="mb-5 font-bold">{quiz.question}</div>
       <div>
         {quiz.quizChoices.map((choice, index) => (
