@@ -7,7 +7,7 @@ export const createFeedback = async ({
   quizId: string;
   isPositive: boolean;
 }) => {
-  const response = await fetch(`${API_URL}/feedback`, {
+  await fetch(`${API_URL}/feedback`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,5 +17,4 @@ export const createFeedback = async ({
       isPositive,
     }),
   });
-  return await response.json();
 };

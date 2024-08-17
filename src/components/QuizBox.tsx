@@ -1,4 +1,4 @@
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { Platform, Quiz } from "../type";
 import { BadIcon, GoodIcon } from "./svg";
 import { getStorageFeedback, setStorageFeedback } from "../storage/feedback";
@@ -17,25 +17,25 @@ export const QuizBox = ({
   const [feedbacked, setFeedbacked] = useState<
     "positive" | "negative" | undefined
   >(undefined);
-  const storageFeedback = useSyncExternalStore(
-    () => () => {},
-    () => getStorageFeedback(quiz.id),
-    () => "waiting"
-  );
+  useEffect(() => {
+    (async () => {
+      const f = await getStorageFeedback(quiz.id);
+      setFeedbacked(f);
+    })();
+  }, [quiz.id]);
 
   const handleAnswer = () => {
     setIsAnswered(true);
     createAnswerLog({ quizId: quiz.id, choiceId: selectedOption });
   };
   const handleFeedback = (isPositive: boolean) => {
-    const feedback = isPositive ? "positive" : "negative";
-    setFeedbacked(feedback);
-    setStorageFeedback(quiz.id, feedback);
+    const f = isPositive ? "positive" : "negative";
+    setFeedbacked(f);
+    setStorageFeedback(quiz.id, f);
     createFeedback({ quizId: quiz.id, isPositive });
   };
 
-  const disabledFeedback =
-    typeof feedbacked === "string" || typeof storageFeedback === "string";
+  const disabledFeedback = typeof feedbacked === "string";
 
   return (
     <div className="py-2 font-sans text-[15px]">
@@ -89,11 +89,7 @@ export const QuizBox = ({
                 className="bg-transparent border-none"
               >
                 <GoodIcon
-                  fillColor={
-                    storageFeedback === "positive" || feedbacked === "positive"
-                      ? "#4caf50"
-                      : "gray"
-                  }
+                  fillColor={feedbacked === "positive" ? "#4caf50" : "gray"}
                 />
               </button>
               <button
@@ -103,11 +99,7 @@ export const QuizBox = ({
                 className="bg-transparent border-none"
               >
                 <BadIcon
-                  fillColor={
-                    storageFeedback === "negative" || feedbacked === "negative"
-                      ? "#f44336"
-                      : "gray"
-                  }
+                  fillColor={feedbacked === "negative" ? "#f44336" : "gray"}
                 />
               </button>
             </div>

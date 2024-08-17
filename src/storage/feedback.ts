@@ -1,14 +1,26 @@
-export const getStorageFeedback = (quizId: string) => {
-  const feedback = localStorage.getItem(`${quizId}_feedback`);
-  if (feedback === "positive" || feedback === "negative") {
-    return feedback;
-  }
-  return undefined;
+import Dexie, { type EntityTable } from "dexie";
+
+type QuizFeedbackDbRecord = {
+  quizId: string;
+  feedback: "positive" | "negative";
+};
+
+const db = new Dexie("QuizFeedback") as Dexie & {
+  quizFeedback: EntityTable<QuizFeedbackDbRecord, "quizId">;
+};
+
+db.version(1).stores({
+  quizFeedback: "quizId, feedback",
+});
+
+export const getStorageFeedback = async (quizId: string) => {
+  const record = await db.quizFeedback.where("quizId").equals(quizId).first();
+  return record?.feedback;
 };
 
 export const setStorageFeedback = (
   quizId: string,
   feedback: "positive" | "negative"
 ) => {
-  localStorage.setItem(`${quizId}_feedback`, feedback);
+  db.quizFeedback.put({ quizId, feedback });
 };

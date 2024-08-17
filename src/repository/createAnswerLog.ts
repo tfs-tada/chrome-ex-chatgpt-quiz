@@ -7,7 +7,7 @@ export const createAnswerLog = async ({
   quizId: string;
   choiceId: string | null;
 }) => {
-  const response = await fetch(`${API_URL}/answer`, {
+  await fetch(`${API_URL}/answer`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,5 +17,4 @@ export const createAnswerLog = async ({
       choiceId,
     }),
   });
-  return await response.json();
 };
