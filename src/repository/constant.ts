@@ -1,1 +1,1 @@
-export const API_URL = "https://quizenn.vercel.app/api";
+export const API_URL = "https://quizenn-df3jqgubgq-an.a.run.app/api";

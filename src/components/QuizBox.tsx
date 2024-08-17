@@ -44,28 +44,26 @@ export const QuizBox = ({
         {quiz.quizChoices.map((choice, index) => (
           <label
             key={index}
-            className={`flex rounded-md mb-2 p-3 cursor-pointer transition-colors duration-300 
-                            ${platform === "Zenn" ? "bg-gray-100" : ""} 
-                            ${
-                              platform === "Qiita"
-                                ? `bg-gray-400 ${
-                                    isAnswered &&
-                                    (choice.isCorrect ||
-                                      selectedOption === choice.id)
-                                      ? ""
-                                      : "bg-opacity-20"
-                                  }`
-                                : ""
-                            } 
-                            ${
-                              isAnswered
-                                ? choice.isCorrect
-                                  ? "bg-green-500 text-white"
-                                  : selectedOption === choice.id
-                                  ? "bg-red-500 text-white"
-                                  : ""
-                                : ""
-                            }`}
+            className={`flex rounded-md mb-2 p-3 cursor-pointer transition-colors duration-300 ${
+              platform === "Zenn" ? "bg-gray-100" : ""
+            } ${
+              platform === "Qiita"
+                ? `bg-gray-400 ${
+                    isAnswered &&
+                    (choice.isCorrect || selectedOption === choice.id)
+                      ? ""
+                      : "bg-opacity-20"
+                  }`
+                : ""
+            } ${
+              isAnswered
+                ? choice.isCorrect
+                  ? "bg-green-500 text-white"
+                  : selectedOption === choice.id
+                  ? "bg-red-500 text-white"
+                  : ""
+                : ""
+            }`}
           >
             <input
               type="radio"
@@ -118,10 +116,9 @@ export const QuizBox = ({
           <div className="flex justify-end">
             <button
               onClick={handleAnswer}
-              className={`text-white border-none px-4 py-2 rounded-full font-bold cursor-pointer text-[14px] 
-                  ${platform === "Zenn" ? "bg-zenn-primary " : ""}
-                  ${platform === "Qiita" ? "bg-qiita-primary" : ""}
-                `}
+              className={`text-white border-none px-4 py-2 rounded-full font-bold cursor-pointer text-[14px] ${
+                platform === "Zenn" ? "bg-zenn-primary " : ""
+              } ${platform === "Qiita" ? "bg-qiita-primary" : ""}`}
             >
               回答
             </button>
