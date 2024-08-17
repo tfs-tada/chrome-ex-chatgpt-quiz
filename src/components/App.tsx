@@ -71,12 +71,26 @@ export const App = ({ platform }: { platform: Platform }) => {
           確認問題
         </h2>
       )}
-      <div className="flex items-center bg-[#fff6e4] my-8 py-4 px-4 rounded-lg">
-        <div className="flex items-center justify-center bg-[#d4af37] text-black w-[1.25em] h-[1.25em] rounded-full m-4">
+      <div
+        className={`flex items-center bg-[#fff6e4] my-8 py-4 px-4 rounded-lg ${
+          platform === "Qiita" ? "font-bold dark:bg-yellow-700" : ""
+        }`}
+      >
+        <div
+          className={`flex items-center justify-center bg-[#d4af37] text-black w-[1.25em] h-[1.25em] rounded-full m-4`}
+        >
           <i>i</i>
         </div>
         <small>
-          確認問題はブラウザ拡張によって挿入された非公式モジュールです（詳細は<a href="https://quizenn.vercel.app" target="_blank" className="underline">こちら</a>）
+          確認問題はブラウザ拡張によって挿入された非公式モジュールです（詳細は
+          <a
+            href="https://quizenn-df3jqgubgq-an.a.run.app"
+            target="_blank"
+            className="underline"
+          >
+            こちら
+          </a>
+          ）
         </small>
       </div>
       {quizList.length === 0 && (
@@ -84,8 +98,7 @@ export const App = ({ platform }: { platform: Platform }) => {
           <button
             onClick={handleCreateQuiz}
             disabled={!!loading}
-            className={`w-1/2 min-w-96 py-2 border rounded-full text-white
-            ${
+            className={`w-1/2 min-w-96 py-2 border rounded-full text-white ${
               loading
                 ? "bg-gray-300"
                 : platform === "dev" || platform === "Zenn"
@@ -93,8 +106,7 @@ export const App = ({ platform }: { platform: Platform }) => {
                 : platform === "Qiita"
                 ? "bg-qiita-primary"
                 : ""
-            }
-            `}
+            }`}
           >
             {loading === "loading"
               ? "ローディング中です"
