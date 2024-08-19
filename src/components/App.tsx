@@ -17,6 +17,8 @@ export const App = ({ platform }: { platform: Platform }) => {
   const [loading, setLoading] = useState<"loading" | "quizCreating" | false>(
     "loading"
   );
+  const [isError, setIsError] = useState(false);
+
   const handleCreateQuiz = async () => {
     setLoading("loading");
     const currentUrl = platform === "dev" ? dummyHref : window.location.href;
@@ -26,6 +28,10 @@ export const App = ({ platform }: { platform: Platform }) => {
     }
     const { author, id } = match.groups!;
     const data = await createQuizes({ author, articleId: id, platform });
+    if (data.error) {
+      setIsError(true);
+      return;
+    }
     if (data.length === 0) {
       setLoading("quizCreating");
       return;
@@ -47,6 +53,10 @@ export const App = ({ platform }: { platform: Platform }) => {
         articleId: id,
         platform,
       });
+      if (data.error) {
+        setIsError(true);
+        return;
+      }
       setArticle(data);
       setQuizList(quizes);
       setLoading(false);
@@ -93,7 +103,14 @@ export const App = ({ platform }: { platform: Platform }) => {
           ）
         </small>
       </div>
-      {quizList.length === 0 && (
+      {isError && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-4 rounded relative">
+          <strong className="font-bold">
+            サーバーエラーが発生しました。時間をおいてリロードしてください。
+          </strong>
+        </div>
+      )}
+      {!isError && quizList.length === 0 && (
         <div className="text-center my-4">
           <button
             onClick={handleCreateQuiz}
