@@ -10,6 +10,12 @@ const hostRegex = {
   Zenn: /https:\/\/zenn\.dev\/(?<author>[^/]+)\/articles\/(?<id>[^/]+)/,
 } as const satisfies Record<Platform, RegExp>;
 const dummyHref = "https://zenn.dev/kurashiki0ecma/articles/83097b7945201b";
+const sortChoices = (quizList: Quiz[]) => {
+  return quizList.map((e: Quiz) => ({
+    ...e,
+    quizChoices: e.quizChoices.sort(() => Math.random() - 0.5),
+  }));
+};
 
 export const App = ({ platform }: { platform: Platform }) => {
   const [, setArticle] = useState<Article | null>(null);
@@ -36,7 +42,7 @@ export const App = ({ platform }: { platform: Platform }) => {
       setLoading("quizCreating");
       return;
     }
-    setQuizList(data);
+    setQuizList(sortChoices(data));
     setLoading(false);
   };
 
@@ -58,7 +64,7 @@ export const App = ({ platform }: { platform: Platform }) => {
         return;
       }
       setArticle(data);
-      setQuizList(quizes);
+      setQuizList(sortChoices(quizes));
       setLoading(false);
     })();
   }, []);
