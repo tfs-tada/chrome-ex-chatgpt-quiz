@@ -123,7 +123,7 @@ export const App = ({ platform }: { platform: Platform }) => {
             disabled={!!loading}
             className={`w-1/2 min-w-96 py-2 border rounded-full text-white ${
               loading
-                ? "bg-gray-300"
+                ? "bg-gray-300 cursor-not-allowed"
                 : platform === "dev" || platform === "Zenn"
                 ? "bg-zenn-primary"
                 : platform === "Qiita"
