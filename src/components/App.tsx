@@ -8,6 +8,7 @@ const hostRegex = {
   dev: /https:\/\/zenn\.dev\/(?<author>[^/]+)\/articles\/(?<id>[^/]+)/,
   Qiita: /https:\/\/qiita\.com\/(?<author>[^/]+)\/items\/(?<id>[^/]+)/,
   Zenn: /https:\/\/zenn\.dev\/(?<author>[^/]+)\/articles\/(?<id>[^/]+)/,
+  Mdn: /https:\/\/developer\.mozilla\.org\/ja\/docs\/(?<id>.+)/,
 } as const satisfies Record<Platform, RegExp>;
 const dummyHref = "https://zenn.dev/kurashiki0ecma/articles/83097b7945201b";
 const sortChoices = (quizList: Quiz[]) => {
@@ -33,7 +34,11 @@ export const App = ({ platform }: { platform: Platform }) => {
       return null;
     }
     const { author, id } = match.groups!;
-    const data = await createQuizes({ author, articleId: id, platform });
+    const data = await createQuizes({
+      author: platform === "Mdn" ? "mdn" : author,
+      articleId: id,
+      platform,
+    });
     if (data.error) {
       setIsError(true);
       return;
@@ -55,7 +60,7 @@ export const App = ({ platform }: { platform: Platform }) => {
       }
       const { author, id } = match.groups!;
       const { quizes, ...data } = await fetchArticle({
-        author,
+        author: platform === "Mdn" ? "mdn" : author,
         articleId: id,
         platform,
       });
@@ -89,7 +94,7 @@ export const App = ({ platform }: { platform: Platform }) => {
       )}
       <div
         className={`flex items-center bg-[#fff6e4] my-8 py-4 px-4 rounded-lg ${
-          platform === "Qiita" ? "font-bold dark:bg-yellow-700" : ""
+          platform === "Zenn" ? "" : "font-bold dark:bg-yellow-700"
         }`}
       >
         <div
@@ -128,7 +133,7 @@ export const App = ({ platform }: { platform: Platform }) => {
                 ? "bg-zenn-primary"
                 : platform === "Qiita"
                 ? "bg-qiita-primary"
-                : ""
+                : "bg-mdn-primary"
             }`}
           >
             {loading === "loading"

@@ -9,6 +9,7 @@ export default {
       colors: {
         "zenn-primary": "#3ea8ff",
         "qiita-primary": "#67cb1b",
+        "mdn-primary": "#44f",
       },
     },
   },
