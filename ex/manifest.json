@@ -4,10 +4,18 @@
   "manifest_version": 3,
   "description": "chrome-ex-chatgpt-quiz",
   "permissions": ["webRequest", "declarativeNetRequest"],
-  "host_permissions": ["https://zenn.dev/*", "https://qiita.com/*"],
+  "host_permissions": [
+    "https://zenn.dev/*",
+    "https://qiita.com/*",
+    "https://developer.mozilla.org/*"
+  ],
   "content_scripts": [
     {
-      "matches": ["https://zenn.dev/*", "https://qiita.com/*"],
+      "matches": [
+        "https://zenn.dev/*",
+        "https://qiita.com/*",
+        "https://developer.mozilla.org/*"
+      ],
       "js": ["content.js"],
       "css": ["injected.css"],
       "run_at": "document_idle"
@@ -16,7 +24,20 @@
   "web_accessible_resources": [
     {
       "resources": ["injected.js", "injected.css"],
-      "matches": ["https://zenn.dev/*", "https://qiita.com/*"]
+      "matches": [
+        "https://zenn.dev/*",
+        "https://qiita.com/*",
+        "https://developer.mozilla.org/*"
+      ]
     }
-  ]
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  }
 }

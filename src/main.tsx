@@ -8,8 +8,11 @@ const render = () => {
     /zenn\.dev\/[^/]+\/articles\/[^/]+/
   );
   const isQiita = window.location.href.match(/qiita\.com\/[^/]+\/items\/[^/]+/);
+  const isMdn = window.location.href.match(
+    /https:\/\/developer\.mozilla\.org\/ja\/docs/
+  );
   const isLocalhost = window.location.href.match(/localhost/);
-  if (!isZenn && !isQiita && !isLocalhost) {
+  if (!isZenn && !isQiita && !isMdn && !isLocalhost) {
     return;
   }
   if (isZenn || isLocalhost) {
@@ -36,11 +39,25 @@ const render = () => {
 
     insertAsideDom.innerHTML = `<div id="quizBox"></div>`;
     targetParent.insertBefore(insertAsideDom, targetDom.nextElementSibling);
+  } else if (isMdn) {
+    console.log("mdn");
+    const targetDom = document.querySelector("main article");
+    const targetParent = targetDom?.parentElement;
+    if (!targetParent) {
+      return;
+    }
+    const insertAsideDom = document.createElement("aside");
+
+    insertAsideDom.innerHTML = `<div id="quizBox"></div>`;
+    // insert after article
+    targetParent.insertBefore(insertAsideDom, targetDom.nextElementSibling);
   }
 
   ReactDOM.createRoot(document.getElementById("quizBox")!).render(
     <React.StrictMode>
-      <App platform={isZenn ? "Zenn" : isQiita ? "Qiita" : "dev"} />
+      <App
+        platform={isZenn ? "Zenn" : isQiita ? "Qiita" : isMdn ? "Mdn" : "dev"}
+      />
     </React.StrictMode>
   );
 };

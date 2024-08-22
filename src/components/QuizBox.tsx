@@ -47,7 +47,7 @@ export const QuizBox = ({
             className={`flex rounded-md mb-2 p-3 cursor-pointer transition-colors duration-300 ${
               platform === "Zenn" ? "bg-gray-100" : ""
             } ${
-              platform === "Qiita"
+              platform === "Qiita" || platform === "Mdn"
                 ? `bg-gray-400 ${
                     isAnswered &&
                     (choice.isCorrect || selectedOption === choice.id)
@@ -110,7 +110,9 @@ export const QuizBox = ({
               onClick={handleAnswer}
               className={`text-white border-none px-4 py-2 rounded-full font-bold cursor-pointer text-[14px] ${
                 platform === "Zenn" ? "bg-zenn-primary " : ""
-              } ${platform === "Qiita" ? "bg-qiita-primary" : ""}`}
+              } ${
+                platform === "Qiita" ? "bg-qiita-primary" : "bg-mdn-primary"
+              }`}
             >
               回答
             </button>
