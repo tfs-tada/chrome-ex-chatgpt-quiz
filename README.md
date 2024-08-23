@@ -1,15 +1,15 @@
 # chrome-ex-chatgpt-quiz
 
-技術記事に確認問題モジュールを自動挿入する Chrome 拡張機能です。特定のwebページを開くと、記事の内容に沿った確認問題モジュールが自動で挿入されます
+技術記事に確認問題モジュールを自動挿入する Chrome 拡張機能です。特定の web ページを開くと、記事の内容に沿った確認問題モジュールが自動で挿入されます
 
-![確認問題モジュール](https://github.com/user-attachments/assets/d3b90927-3dfe-4c3b-9134-301de771ad13)
+<img style="border: 1px solid #999;" src="https://github.com/user-attachments/assets/d3b90927-3dfe-4c3b-9134-301de771ad13" />
 
 ## 注意
 
 - **拡張対象のページでは Content Security Policy が無効化されます。自己責任でお使いください**
-- apiサーバに接続してクイズを取得します。サーバーサイドが突然死ぬ可能性があります
+- api サーバに接続してクイズを取得します。サーバーサイドが突然死ぬ可能性があります
   - サーバーサイド: https://quizenn-df3jqgubgq-an.a.run.app/
-- クイズ生成には外部AIサービスを使用しています。クイズや解説の正確性については保証できません
+- クイズ生成には外部 AI サービスを使用しています。クイズや解説の正確性については保証できません
 
 ## インストール
 
@@ -21,7 +21,7 @@ git clone git@github.com:tfs-tada/chrome-ex-chatgpt-quiz.git
 
 ### 2. Chrome の拡張機能のページを開く
 
-* <a href="chrome://extensions/">chrome://extensions/</a>
+- <a href="chrome://extensions/" target="_brank">chrome://extensions/</a>
 
 ### 3. 右上の「デベロッパーモード」を有効にする
 
@@ -34,7 +34,7 @@ git clone git@github.com:tfs-tada/chrome-ex-chatgpt-quiz.git
 読み込みが成功したら、拡張一覧に chrome-ex-chatgpt-quiz が表示されます。
 ![選択したらこの画面になります](https://github.com/user-attachments/assets/f1beafaf-a0dd-4613-a49c-58000d4cf792)
 
-### 5. 拡張対象のwebページを開く
+### 5. 拡張対象の web ページを開く
 
 対応ページを訪問すると、ページの下部に「確認問題」モジュールが自動挿入されます
 現在対応しているページは以下の通りです
