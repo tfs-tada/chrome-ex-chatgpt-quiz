@@ -105,7 +105,7 @@ export const App = ({ platform }: { platform: Platform }) => {
         <small>
           確認問題はブラウザ拡張によって挿入された非公式モジュールです（詳細は
           <a
-            href="https://quizenn-df3jqgubgq-an.a.run.app"
+            href="https://quizenn-df3jqgubgq-an.a.run.app/about"
             target="_blank"
             className="underline"
           >
