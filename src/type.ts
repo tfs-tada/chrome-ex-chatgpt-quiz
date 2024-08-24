@@ -31,3 +31,13 @@ export type Article = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type Result<T> =
+  | {
+      data: T;
+      error: false;
+    }
+  | {
+      data: null;
+      error: true;
+    };

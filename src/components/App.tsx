@@ -28,18 +28,21 @@ export const App = ({ platform }: { platform: Platform }) => {
 
   const handleCreateQuiz = async () => {
     setLoading("loading");
-    const currentUrl = platform === "dev" ? dummyHref : window.location.href;
+    const currentUrl =
+      platform === "dev"
+        ? dummyHref
+        : `${window.location.origin}${window.location.pathname}`;
     const match = currentUrl.match(hostRegex[platform]);
     if (!match) {
       return null;
     }
     const { author, id } = match.groups!;
-    const data = await createQuizes({
+    const { error, data } = await createQuizes({
       author: platform === "Mdn" ? "mdn" : author,
       articleId: id,
       platform,
     });
-    if (data.error) {
+    if (error) {
       setIsError(true);
       return;
     }
@@ -53,22 +56,26 @@ export const App = ({ platform }: { platform: Platform }) => {
 
   useEffect(() => {
     (async () => {
-      const currentUrl = platform === "dev" ? dummyHref : window.location.href;
+      const currentUrl =
+        platform === "dev"
+          ? dummyHref
+          : `${window.location.origin}${window.location.pathname}`;
       const match = currentUrl.match(hostRegex[platform]);
       if (!match) {
         return null;
       }
       const { author, id } = match.groups!;
-      const { quizes, ...data } = await fetchArticle({
+      const { error, data } = await fetchArticle({
         author: platform === "Mdn" ? "mdn" : author,
         articleId: id,
         platform,
       });
-      if (data.error) {
+      if (error) {
         setIsError(true);
         return;
       }
-      setArticle(data);
+      const { quizes, ...d } = data;
+      setArticle(d);
       setQuizList(sortChoices(quizes));
       setLoading(false);
     })();
