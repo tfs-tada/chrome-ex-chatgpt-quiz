@@ -1,4 +1,4 @@
-export type Platform = "Zenn" | "Qiita" | "Mdn" | "dev";
+export type Platform = "Zenn" | "Qiita" | "Mdn";
 
 export type Quiz = {
   quizChoices: {

@@ -11,11 +11,10 @@ const render = () => {
   const isMdn = window.location.href.match(
     /https:\/\/developer\.mozilla\.org\/ja\/docs/
   );
-  const isLocalhost = window.location.href.match(/localhost/);
-  if (!isZenn && !isQiita && !isMdn && !isLocalhost) {
+  if (!isZenn && !isQiita && !isMdn) {
     return;
   }
-  if (isZenn || isLocalhost) {
+  if (isZenn) {
     const targetDom = document.querySelector(
       "article section aside[class^='View_authorInfo']"
     );
@@ -55,9 +54,7 @@ const render = () => {
 
   ReactDOM.createRoot(document.getElementById("quizBox")!).render(
     <React.StrictMode>
-      <App
-        platform={isZenn ? "Zenn" : isQiita ? "Qiita" : isMdn ? "Mdn" : "dev"}
-      />
+      <App platform={isZenn ? "Zenn" : isQiita ? "Qiita" : "Mdn"} />
     </React.StrictMode>
   );
 };

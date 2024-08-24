@@ -5,16 +5,15 @@ import { createQuizes } from "../repository/createQuizes";
 import { fetchArticle } from "../repository/fetchArticle";
 
 const hostRegex = {
-  dev: /https:\/\/zenn\.dev\/(?<author>[^/]+)\/articles\/(?<id>[^/]+)/,
   Qiita: /https:\/\/qiita\.com\/(?<author>[^/]+)\/items\/(?<id>[^/]+)/,
   Zenn: /https:\/\/zenn\.dev\/(?<author>[^/]+)\/articles\/(?<id>[^/]+)/,
   Mdn: /https:\/\/developer\.mozilla\.org\/ja\/docs\/(?<id>.+)/,
 } as const satisfies Record<Platform, RegExp>;
-const dummyHref = "https://zenn.dev/kurashiki0ecma/articles/83097b7945201b";
+
 const sortChoices = (quizList: Quiz[]) => {
   return quizList.map((e: Quiz) => ({
     ...e,
-    quizChoices: e.quizChoices.sort(() => Math.random() - 0.5),
+    quizChoices: e.quizChoices.toSorted(() => Math.random() - 0.5),
   }));
 };
 
@@ -25,13 +24,10 @@ export const App = ({ platform }: { platform: Platform }) => {
     "loading"
   );
   const [isError, setIsError] = useState(false);
+  const currentUrl = `${window.location.origin}${window.location.pathname}`;
 
   const handleCreateQuiz = async () => {
     setLoading("loading");
-    const currentUrl =
-      platform === "dev"
-        ? dummyHref
-        : `${window.location.origin}${window.location.pathname}`;
     const match = currentUrl.match(hostRegex[platform]);
     if (!match) {
       return null;
@@ -56,10 +52,6 @@ export const App = ({ platform }: { platform: Platform }) => {
 
   useEffect(() => {
     (async () => {
-      const currentUrl =
-        platform === "dev"
-          ? dummyHref
-          : `${window.location.origin}${window.location.pathname}`;
       const match = currentUrl.match(hostRegex[platform]);
       if (!match) {
         return null;
@@ -83,7 +75,7 @@ export const App = ({ platform }: { platform: Platform }) => {
 
   return (
     <div className="mb-4">
-      {platform === "dev" || platform === "Zenn" ? (
+      {platform === "Zenn" ? (
         <h1 className="text-2xl mt-7 mb-4 border-b border-gray-300">
           確認問題
         </h1>
@@ -136,7 +128,7 @@ export const App = ({ platform }: { platform: Platform }) => {
             className={`w-1/2 min-w-96 py-2 border rounded-full text-white ${
               loading
                 ? "bg-gray-300 cursor-not-allowed"
-                : platform === "dev" || platform === "Zenn"
+                : platform === "Zenn"
                 ? "bg-zenn-primary"
                 : platform === "Qiita"
                 ? "bg-qiita-primary"
@@ -152,11 +144,7 @@ export const App = ({ platform }: { platform: Platform }) => {
         </div>
       )}
       {quizList.map((quiz) => (
-        <QuizBox
-          key={quiz.id}
-          quiz={quiz}
-          platform={platform === "dev" ? "Zenn" : platform}
-        />
+        <QuizBox key={quiz.id} quiz={quiz} platform={platform} />
       ))}
     </div>
   );
