@@ -11,9 +11,7 @@ export const fetchArticle = async ({
   platform: Platform;
 }): Promise<Result<Article & { quizes: Quiz[] }>> => {
   const response = await fetch(
-    `${API_URL}/article?author=${author}&articleId=${articleId}&platform=${
-      platform === "dev" ? "Zenn" : platform
-    }`
+    `${API_URL}/article?author=${author}&articleId=${articleId}&platform=${platform}`
   );
   try {
     if (response.status !== 200) {

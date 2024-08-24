@@ -18,7 +18,7 @@ export const createQuizes = async ({
     body: JSON.stringify({
       author,
       articleId,
-      platform: platform === "dev" ? "Zenn" : platform,
+      platform,
     }),
   });
   try {
