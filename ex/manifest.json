@@ -2,7 +2,12 @@
   "name": "chrome-ex-chatgpt-quiz",
   "version": "1.0.0",
   "manifest_version": 3,
-  "description": "chrome-ex-chatgpt-quiz",
+  "icons": {
+    "16": "icon/icon16.png",
+    "48": "icon/icon48.png",
+    "128": "icon/icon128.png"
+  },
+  "description": "ZennやQiitaの技術記事、MDNの仕様解説記事の末尾に確認問題モジュールを挿入するブラウザ拡張",
   "permissions": ["webRequest", "declarativeNetRequest"],
   "host_permissions": [
     "https://zenn.dev/*",
