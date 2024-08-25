@@ -32,7 +32,7 @@ git clone git@github.com:tfs-tada/chrome-ex-chatgpt-quiz.git
 ![パッケージ化されていない拡張機能を読み込む](https://github.com/user-attachments/assets/b9eae562-e090-4d11-b15b-c459455d670f)
 
 読み込みが成功したら、拡張一覧に chrome-ex-chatgpt-quiz が表示されます。
-![選択したらこの画面になります](https://github.com/user-attachments/assets/f1beafaf-a0dd-4613-a49c-58000d4cf792)
+![選択したらこの画面になります](https://github.com/user-attachments/assets/278c7ca6-5fa2-4fb0-b33e-f6d281a76b59)
 
 ### 5. 拡張対象の web ページを開く
 
