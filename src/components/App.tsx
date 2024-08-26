@@ -3,6 +3,7 @@ import { Article, Platform, Quiz } from "../type";
 import { QuizBox } from "./QuizBox";
 import { createQuizes } from "../repository/createQuizes";
 import { fetchArticle } from "../repository/fetchArticle";
+import { Heading } from "./Heading";
 
 const hostRegex = {
   Qiita: /https:\/\/qiita\.com\/(?<author>[^/]+)\/items\/(?<id>[^/]+)/,
@@ -75,22 +76,7 @@ export const App = ({ platform }: { platform: Platform }) => {
 
   return (
     <div className="mb-4">
-      {platform === "Zenn" ? (
-        <h1 className="text-2xl mt-7 mb-4 border-b border-gray-300">
-          確認問題
-        </h1>
-      ) : (
-        <h2
-          style={{
-            fontSize: "1.53em",
-            margin: "1.8em 0 1.1rem",
-            borderBottom: "1px solid rgb(255 255 255 / 20%)",
-            fontWeight: "bold",
-          }}
-        >
-          確認問題
-        </h2>
-      )}
+      <Heading platform={platform} />
       <div
         className={`flex items-center bg-[#fff6e4] my-8 py-4 px-4 rounded-lg ${
           platform === "Zenn" ? "" : "font-bold dark:bg-yellow-700"
