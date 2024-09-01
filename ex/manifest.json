@@ -1,6 +1,6 @@
 {
   "name": "chrome-ex-chatgpt-quiz",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "manifest_version": 3,
   "icons": {
     "16": "icon/icon16.png",
