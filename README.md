@@ -13,7 +13,7 @@
 
 ## インストール
 
-### 1. このリポジトリをクローンするか、ZIP ファイルをダウンロードして解凍。
+### 1. このリポジトリをクローンするか、ZIP ファイルをダウンロードして解凍
 
 ```bash
 git clone git@github.com:tfs-tada/chrome-ex-chatgpt-quiz.git
@@ -42,3 +42,4 @@ git clone git@github.com:tfs-tada/chrome-ex-chatgpt-quiz.git
 - Zenn（記事）: https://zenn.dev/
 - Qiita（記事）: https://qiita.com/
 - MDN（ドキュメント）: https://developer.mozilla.org/
+- PosgreSQL文書 16.3（ドキュメント）: https://www.postgresql.jp/document/16/html/

@@ -11,7 +11,10 @@ const render = () => {
   const isMdn = window.location.href.match(
     /https:\/\/developer\.mozilla\.org\/ja\/docs/
   );
-  if (!isZenn && !isQiita && !isMdn) {
+  const isPsql = window.location.href.match(
+    /https:\/\/www\.postgresql\.jp\/document\/16\/html/
+  );
+  if (!isZenn && !isQiita && !isMdn && !isPsql) {
     return;
   }
   if (isZenn) {
@@ -39,7 +42,6 @@ const render = () => {
     insertAsideDom.innerHTML = `<div id="quizBox"></div>`;
     targetParent.insertBefore(insertAsideDom, targetDom.nextElementSibling);
   } else if (isMdn) {
-    console.log("mdn");
     const targetDom = document.querySelector("main article");
     const targetParent = targetDom?.parentElement;
     if (!targetParent) {
@@ -48,13 +50,26 @@ const render = () => {
     const insertAsideDom = document.createElement("aside");
 
     insertAsideDom.innerHTML = `<div id="quizBox"></div>`;
-    // insert after article
     targetParent.insertBefore(insertAsideDom, targetDom.nextElementSibling);
+  } else if (isPsql) {
+    const targetDom = document.querySelector("body .navfooter");
+    const targetParent = targetDom?.parentElement;
+    if (!targetParent) {
+      return;
+    }
+    const insertAsideDom = document.createElement("aside");
+
+    insertAsideDom.innerHTML = `<div id="quizBox"></div>`;
+    targetParent.insertBefore(insertAsideDom, targetDom);
   }
 
   ReactDOM.createRoot(document.getElementById("quizBox")!).render(
     <React.StrictMode>
-      <App platform={isZenn ? "Zenn" : isQiita ? "Qiita" : "Mdn"} />
+      <App
+        platform={
+          isZenn ? "Zenn" : isQiita ? "Qiita" : isMdn ? "Mdn" : "Doc_PostgreSQL"
+        }
+      />
     </React.StrictMode>
   );
 };
