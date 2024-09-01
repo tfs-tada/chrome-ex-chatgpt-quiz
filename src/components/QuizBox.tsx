@@ -45,9 +45,13 @@ export const QuizBox = ({
           <label
             key={index}
             className={`flex rounded-md mb-2 p-3 cursor-pointer transition-colors duration-300 ${
-              platform === "Zenn" ? "bg-gray-100" : ""
+              platform === "Zenn" || platform === "Doc_PostgreSQL"
+                ? "bg-gray-100"
+                : ""
             } ${
-              platform === "Qiita" || platform === "Mdn"
+              platform === "Qiita" ||
+              platform === "Mdn" ||
+              platform === "Doc_PostgreSQL"
                 ? `bg-gray-400 ${
                     isAnswered &&
                     (choice.isCorrect || selectedOption === choice.id)

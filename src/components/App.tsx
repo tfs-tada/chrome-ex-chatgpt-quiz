@@ -9,6 +9,8 @@ const hostRegex = {
   Qiita: /https:\/\/qiita\.com\/(?<author>[^/]+)\/items\/(?<id>[^/]+)/,
   Zenn: /https:\/\/zenn\.dev\/(?<author>[^/]+)\/articles\/(?<id>[^/]+)/,
   Mdn: /https:\/\/developer\.mozilla\.org\/ja\/docs\/(?<id>.+)/,
+  Doc_PostgreSQL:
+    /https:\/\/www\.postgresql\.jp\/document\/16\/html\/(?<id>.+)/,
 } as const satisfies Record<Platform, RegExp>;
 
 const sortChoices = (quizList: Quiz[]) => {
@@ -35,7 +37,12 @@ export const App = ({ platform }: { platform: Platform }) => {
     }
     const { author, id } = match.groups!;
     const { error, data } = await createQuizes({
-      author: platform === "Mdn" ? "mdn" : author,
+      author:
+        platform === "Mdn"
+          ? "mdn"
+          : platform === "Doc_PostgreSQL"
+          ? "postgresql"
+          : author,
       articleId: id,
       platform,
     });
@@ -59,7 +66,12 @@ export const App = ({ platform }: { platform: Platform }) => {
       }
       const { author, id } = match.groups!;
       const { error, data } = await fetchArticle({
-        author: platform === "Mdn" ? "mdn" : author,
+        author:
+          platform === "Mdn"
+            ? "mdn"
+            : platform === "Doc_PostgreSQL"
+            ? "postgresql"
+            : author,
         articleId: id,
         platform,
       });
@@ -79,7 +91,9 @@ export const App = ({ platform }: { platform: Platform }) => {
       <Heading platform={platform} />
       <div
         className={`flex items-center bg-[#fff6e4] my-8 py-4 px-4 rounded-lg ${
-          platform === "Zenn" ? "" : "font-bold dark:bg-yellow-700"
+          platform === "Zenn" || platform === "Doc_PostgreSQL"
+            ? ""
+            : "font-bold dark:bg-yellow-700"
         }`}
       >
         <div

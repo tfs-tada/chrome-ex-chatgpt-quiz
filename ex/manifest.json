@@ -12,14 +12,16 @@
   "host_permissions": [
     "https://zenn.dev/*",
     "https://qiita.com/*",
-    "https://developer.mozilla.org/*"
+    "https://developer.mozilla.org/*",
+    "https://www.postgresql.jp/*"
   ],
   "content_scripts": [
     {
       "matches": [
         "https://zenn.dev/*",
         "https://qiita.com/*",
-        "https://developer.mozilla.org/*"
+        "https://developer.mozilla.org/*",
+        "https://www.postgresql.jp/*"
       ],
       "js": ["content.js"],
       "css": ["injected.css"],
@@ -32,7 +34,8 @@
       "matches": [
         "https://zenn.dev/*",
         "https://qiita.com/*",
-        "https://developer.mozilla.org/*"
+        "https://developer.mozilla.org/*",
+        "https://www.postgresql.jp/*"
       ]
     }
   ],

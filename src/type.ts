@@ -1,4 +1,4 @@
-export type Platform = "Zenn" | "Qiita" | "Mdn";
+export type Platform = "Zenn" | "Qiita" | "Mdn" | "Doc_PostgreSQL";
 
 export type Quiz = {
   quizChoices: {
